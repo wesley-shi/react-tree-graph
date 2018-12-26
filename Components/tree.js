@@ -1,11 +1,17 @@
 import clone from 'clone';
-import { easeQuadOut } from 'd3-ease';
-import { hierarchy, tree } from 'd3-hierarchy';
+import {
+	easeQuadOut
+} from 'd3-ease';
+import {
+	hierarchy,
+	tree
+} from 'd3-hierarchy';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Animated from './animated';
 
 const propTypes = {
+	mouseoverTextProp: PropTypes.string,
 	data: PropTypes.object.isRequired,
 	animated: PropTypes.bool.isRequired,
 	children: PropTypes.node,
@@ -34,6 +40,7 @@ const propTypes = {
 
 const defaultProps = {
 	animated: false,
+	mouseoverTextProp: '',
 	duration: 500,
 	easing: easeQuadOut,
 	getChildren: n => n.children,
@@ -67,7 +74,7 @@ export default class Tree extends React.PureComponent {
 		// data is cloned because d3 will mutate the object passed in
 		let data = hierarchy(clone(this.props.data), this.props.getChildren);
 
-		let root =  tree().size([contentHeight, contentWidth])(data);
+		let root = tree().size([contentHeight, contentWidth])(data);
 		let nodes = root.descendants();
 		let links = root.links();
 
@@ -78,6 +85,7 @@ export default class Tree extends React.PureComponent {
 		return (
 			<Animated
 				animated={this.props.animated}
+				mouseoverTextProp={this.props.mouseoverTextProp}
 				duration={this.props.duration}
 				easing={this.props.easing}
 				getChildren={this.props.getChildren}
@@ -95,7 +103,7 @@ export default class Tree extends React.PureComponent {
 				pathProps={this.props.pathProps}
 				svgProps={this.props.svgProps}
 				textProps={this.props.textProps}>
-				{ this.props.children }
+				{this.props.children}
 			</Animated>);
 	}
 }

@@ -53,6 +53,21 @@
 		return Constructor;
 	}
 
+	function _defineProperty(obj, key, value) {
+		if (key in obj) {
+			Object.defineProperty(obj, key, {
+				value: value,
+				enumerable: true,
+				configurable: true,
+				writable: true
+			});
+		} else {
+			obj[key] = value;
+		}
+
+		return obj;
+	}
+
 	function _extends() {
 		_extends =
 			Object.assign ||
@@ -71,6 +86,27 @@
 			};
 
 		return _extends.apply(this, arguments);
+	}
+
+	function _objectSpread(target) {
+		for (var i = 1; i < arguments.length; i++) {
+			var source = arguments[i] != null ? arguments[i] : {};
+			var ownKeys = Object.keys(source);
+
+			if (typeof Object.getOwnPropertySymbols === 'function') {
+				ownKeys = ownKeys.concat(
+					Object.getOwnPropertySymbols(source).filter(function(sym) {
+						return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+					})
+				);
+			}
+
+			ownKeys.forEach(function(key) {
+				_defineProperty(target, key, source[key]);
+			});
+		}
+
+		return target;
 	}
 
 	function _inherits(subClass, superClass) {
@@ -206,6 +242,7 @@
 	Link.propTypes = propTypes;
 
 	var propTypes$1 = {
+		mouseoverTextProp: PropTypes.string,
 		x: PropTypes.number.isRequired,
 		y: PropTypes.number.isRequired,
 		keyProp: PropTypes.string.isRequired,
@@ -231,6 +268,9 @@
 					this,
 					_getPrototypeOf(Node).call(this, props)
 				);
+				_this.state = {
+					mouseOver: false
+				};
 				_this.handleClick = _this.handleClick.bind(
 					_assertThisInitialized(_assertThisInitialized(_this))
 				);
@@ -254,6 +294,8 @@
 				{
 					key: 'render',
 					value: function render() {
+						var _this2 = this;
+
 						return React.createElement(
 							'g',
 							_extends({}, this.props.gProps, {
@@ -270,9 +312,25 @@
 								'text',
 								_extends({}, this.props.textProps, {
 									dx: this.props.radius + 0.5,
-									dy: this.props.offset
+									dy: this.props.offset,
+									onMouseEnter: function onMouseEnter() {
+										_this2.setState(
+											_objectSpread({}, _this2.state, {
+												mouseOver: true
+											})
+										);
+									},
+									onMouseLeave: function onMouseLeave() {
+										_this2.setState(
+											_objectSpread({}, _this2.state, {
+												mouseOver: false
+											})
+										);
+									}
 								}),
-								this.props[this.props.labelProp]
+								this.state.mouseOver
+									? this.props[this.props.mouseoverTextProp]
+									: this.props[this.props.labelProp]
 							)
 						);
 					}
@@ -284,6 +342,7 @@
 	Node.propTypes = propTypes$1;
 
 	var propTypes$2 = {
+		mouseoverTextProp: PropTypes.string,
 		height: PropTypes.number.isRequired,
 		keyProp: PropTypes.string.isRequired,
 		labelProp: PropTypes.string.isRequired,
@@ -349,6 +408,7 @@
 									Node,
 									_extends(
 										{
+											mouseoverTextProp: _this.props.mouseoverTextProp,
 											key: node.data[_this.props.keyProp],
 											keyProp: _this.props.keyProp,
 											labelProp: _this.props.labelProp,
@@ -387,6 +447,7 @@
 
 	var propTypes$3 = {
 		animated: PropTypes.bool.isRequired,
+		mouseoverTextProp: PropTypes.string,
 		getChildren: PropTypes.func.isRequired,
 		keyProp: PropTypes.string.isRequired,
 		links: PropTypes.array.isRequired,
@@ -753,6 +814,7 @@
 	Animated.propTypes = propTypes$3;
 
 	var propTypes$4 = {
+		mouseoverTextProp: PropTypes.string,
 		data: PropTypes.object.isRequired,
 		animated: PropTypes.bool.isRequired,
 		children: PropTypes.node,
@@ -780,6 +842,7 @@
 	};
 	var defaultProps = {
 		animated: false,
+		mouseoverTextProp: '',
 		duration: 500,
 		easing: d3Ease.easeQuadOut,
 		getChildren: function getChildren(n) {
@@ -852,6 +915,7 @@
 							Animated,
 							{
 								animated: this.props.animated,
+								mouseoverTextProp: this.props.mouseoverTextProp,
 								duration: this.props.duration,
 								easing: this.props.easing,
 								getChildren: this.props.getChildren,

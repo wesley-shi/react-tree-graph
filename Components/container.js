@@ -4,6 +4,7 @@ import Link from './link';
 import Node from './node';
 
 const propTypes = {
+	mouseoverTextProp: PropTypes.string,
 	height: PropTypes.number.isRequired,
 	keyProp: PropTypes.string.isRequired,
 	labelProp: PropTypes.string.isRequired,
@@ -24,8 +25,8 @@ export default class Container extends React.PureComponent {
 	render() {
 		return (
 			<svg {...this.props.svgProps} height={this.props.height} width={this.props.width}>
-				{ this.props.children }
-				{ this.props.links.map(link =>
+				{this.props.children}
+				{this.props.links.map(link =>
 					<Link
 						key={link.target.data[this.props.keyProp]}
 						keyProp={this.props.keyProp}
@@ -35,10 +36,11 @@ export default class Container extends React.PureComponent {
 						x2={link.target.x}
 						y1={link.source.y}
 						y2={link.target.y}
-						pathProps={Object.assign({}, this.props.pathProps, link.target.data.pathProps)}/>)
+						pathProps={Object.assign({}, this.props.pathProps, link.target.data.pathProps)} />)
 				}
-				{ this.props.nodes.map(node =>
+				{this.props.nodes.map(node =>
 					<Node
+						mouseoverTextProp={this.props.mouseoverTextProp}
 						key={node.data[this.props.keyProp]}
 						keyProp={this.props.keyProp}
 						labelProp={this.props.labelProp}
@@ -49,7 +51,7 @@ export default class Container extends React.PureComponent {
 						circleProps={Object.assign({}, this.props.circleProps, node.data.circleProps)}
 						gProps={Object.assign({}, this.props.gProps, node.data.gProps)}
 						textProps={Object.assign({}, this.props.textProps, node.data.textProps)}
-						{...node.data}/>)
+						{...node.data} />)
 				}
 			</svg>);
 	}

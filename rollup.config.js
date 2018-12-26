@@ -15,7 +15,8 @@ const defaultConfig = {
 		'd3-hierarchy',
 		'd3-ease',
 		'prop-types',
-		'react'
+		'react',
+		'react-tooltip'
 	],
 	input: 'index.js',
 	output: {
@@ -25,7 +26,8 @@ const defaultConfig = {
 			react: 'React',
 			clone: 'clone',
 			'd3-ease': 'd3',
-			'd3-hierarchy': 'd3'
+			'd3-hierarchy': 'd3',
+			'react-tooltip': 'ReactTooltip'
 		},
 		interop: false,
 		name: 'ReactTreeGraph'
